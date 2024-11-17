@@ -13,7 +13,7 @@ tmpPostgres = urlparse(env("DATABASE_URL"))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = ['fashion-mc.com','www.fashion-mc.com', '*']
 ALLOWED_HOSTS = ['*']
