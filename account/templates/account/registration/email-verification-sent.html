@@ -1,0 +1,32 @@
+{% include "store/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<body class="bg-secondary">
+  <br>
+  <div class="d-flex justify-content-center align-items-center" style="height: 500px;">
+    <div class="container bg-white shadow-md p-5 form-layout mb-4">
+  
+      <div class="text-center">
+        <i class="fa fa-envelope fa-3x"></i>
+        <br>
+        <br>
+        <h4>
+          <strong>
+            A verification link was sent to your email!
+          </strong>
+        </h4>
+        <hr>
+        <p>
+          Please check your email
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+
+{% endblock %}

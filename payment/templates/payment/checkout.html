@@ -1,0 +1,207 @@
+{% include "store/base.html" %}
+
+
+{% load static %}
+
+
+{% block content %}
+
+	<body class="bg-secondary">
+		<br>
+		<div class="container bg-white shadow-md p-5 mb-4 rounded">
+			<div class="row">
+				<div class="col-md-8 border-end mb-2">
+					<form id="checkout_form" class="row g-2" method="POST" autocomplete="off" onsubmit="event.preventDefault();">
+						{% csrf_token %}
+						<h3> <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> Complete your order </h3>
+						<hr>
+						<p> Please enter in the relevant information below. </p>
+						<div class="col-md-6">
+							<label for="name" class="form-label">Full Name* </label>
+							<input type="text" id="name" class="form-control validate" value="{{shipping.full_name}}" required>
+						</div>
+						<div class="col-md-6">
+							<label for="email" class="form-label">Email Address* </label>
+							<input type="email" class="form-control validate" id="email" value="{{shipping.email}}" required>
+						</div>
+						<div class="col-12">
+							<label for="email" class="form-label">First Address* </label>
+							<input type="text" class="form-control validate" id="first_address" name="first_address" value="{{shipping.first_address}}" required>
+						</div>
+						<div class="col-12">
+							<label for="email" class="form-label">Second Address* </label>
+							<input type="text" class="form-control validate" id="second_address" name="second_address" value="{{shipping.second_address}}" required>
+						</div>
+						<div class="col-md-6">
+							<label for="city" class="form-label">City* </label>
+							<input type="text" class="form-control validate" id="city" name="city" value="{{shipping.city}}" required>
+						</div>
+						<div class="col-md-4">
+							<label for="state" class="form-label">State</label>
+							<input type="text" class="form-control" id="state" name="state" value="{{shipping.state}}">
+						</div>
+						<div class="col-md-2">
+							<label for="zipcode" class="form-label">Zip</label>
+							<input type="text" class="form-control" id="zipcode" name="zipcode" value="{{shipping.zipcode}}">
+						</div>
+					</form>
+				</div>
+				<div class="col-md-4">
+					<h3> <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> Paid Here </h3>
+					<hr>
+					<p> This is a secure manner of pay. </p>
+					<div id="paypal-button-container"></div>
+	
+				</div>
+			</div>
+		</div>
+		<br>
+	</body>
+	
+	<!-- PayPal client ID integration -->
+	<script src="https://www.paypal.com/sdk/js?client-id=AX6exZRsedQrN_vEeklKjkPsTm3dX3RW3ssHsalhB2ZevZP2fVPU-sguPaQUGqG1-fjDXeaeeQPElZRo&currency=USD&intent=capture&disable-funding=paylater" data-sdk-integration-source="integrationbuilder"></script>
+	<script>
+		const totalPrice = '{{cart.total}}';
+		const paypalButtonsComponent = paypal.Buttons({
+
+			style: {
+				color: "blue",
+				shape: "rect",
+				layout: "vertical"
+			},
+		
+			onInit: function( data, actions ) {
+	
+				actions.disable();
+
+				/* Complete order -- no Shipping */
+				document.querySelectorAll('.validate').forEach( element => {
+		
+					element.addEventListener('keyup', event => {
+						
+						let orderVerified = true;
+		
+						function checkInputs() {
+		
+							$(':input[required]').each(function(){
+		
+								if ($(this).val() == '') {
+	
+									return orderVerified = false;  
+		
+								}
+		
+							});
+							return orderVerified;
+						}
+		
+						let isOrderVerified = checkInputs();
+		
+						if ( isOrderVerified ) {
+		
+							actions.enable();
+		
+						}
+						else {
+	
+							actions.disable();
+		
+						}
+		
+					});
+		
+				});
+
+				/*With Shipping*/
+
+				let orderVerified = true;
+		
+				function checkInputs() {
+
+					$(':input[required]').each(function(){
+
+						if ($(this).val() == '') {
+
+							return orderVerified = false;  
+
+						}
+
+					});
+					return orderVerified;
+				}
+
+				let isOrderVerified = checkInputs();
+
+				if ( isOrderVerified ) {
+
+					actions.enable();
+
+				}
+				else {
+
+					actions.disable();
+
+				}
+		
+			},
+			createOrder: (data, actions) => {
+				const createOrderPayload = {
+					purchase_units: [
+						{
+							amount: {
+								value: totalPrice
+							}
+						}
+					]
+				};
+		
+				return actions.order.create(createOrderPayload);
+			},
+			onApprove: (data, actions) => {
+				const captureOrderHandler = (details) => {
+					const payerName = details.payer.name.given_name;
+					console.log('Transaction completed');
+
+					$.ajax({
+						type: 'POST',
+						url: '{% url "complete-order" %}',
+						data: {
+							name: $('#name').val(),
+							email: $('#email').val(),
+							first_address: $('#first_address').val(),
+							second_address: $('#second_address').val(),
+							city: $('#city').val(),
+							state: $('#state').val(),
+							zipcode: $('#zipcode').val(),
+							csrfmiddlewaretoken: '{{csrf_token}}',
+							action: 'post'
+						},
+	
+						success: (json) => {
+							window.location.replace("{% url 'payment-success' %}")
+						},
+	
+						error: (xhr, errmsg, err) => {
+							window.location.replace("{% url 'payment-failed' %}")
+	
+						}
+					});
+				};
+				return actions.order.capture().then(captureOrderHandler);
+			},
+
+			onError: (err) => {
+				console.error('An error prevented the buyer from checking out with PayPal');
+		
+			}
+		});
+	
+		paypalButtonsComponent
+			.render("#paypal-button-container")
+			.catch((err) => {
+				console.error('PayPal Buttons failed to render');
+			});
+	
+	</script>
+
+{% endblock %}

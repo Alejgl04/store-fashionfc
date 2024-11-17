@@ -1,0 +1,57 @@
+{% include "store/base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <body class="bg-secondary">
+    <br>
+    <div class="container bg-white shadow-md p-5 form-layout-shipping mb-4">
+      <div class="row d-flex justify-content-center">
+        <div class="col">
+          <h3>Manage Address</h3>
+          <p>
+            Please fill in your shipping address
+          </p>
+          <hr>          
+          <form class="row g-3" method="POST" autocomplete="off">
+            {% csrf_token %}
+            <div class="col-md-6">
+              {{ form.full_name | as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+              {{ form.email | as_crispy_field }}
+            </div>
+            <div class="col-12">
+              {{ form.first_address | as_crispy_field }}
+
+            </div>
+            <div class="col-12">
+              {{ form.second_address | as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+              {{ form.city | as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+              {{ form.state | as_crispy_field }}
+            </div>
+            <div class="col-md-2">
+              {{ form.zipcode | as_crispy_field }}
+            </div>
+            <div class="col-6">
+              <button type="submit" class="btn btn-primary w-100">Update Shipping</button>
+              
+            </div>
+            <div class="col-6">
+              <a class="btn btn-primary w-100 btn-block" href="{% url 'dashboard' %}"> Go back </a>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  
+{% endblock content %}

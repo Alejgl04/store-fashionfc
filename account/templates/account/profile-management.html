@@ -1,0 +1,42 @@
+
+{% include "store/base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  
+<body class="bg-secondary">
+  <br>
+  <div class="container bg-white shadow-md p-5 mb-4">
+    <h3 class="text-center">Profile Management</h3>
+    <div class="row">
+      <div class="col-md-6 p-4 m-2 border">
+        <h4>Update your account</h4>
+          <hr>          
+          <form method="POST" autocomplete="off">
+          
+            {% csrf_token %}
+          
+            {{ user_form.username|as_crispy_field }}
+            <br>
+            {{ user_form.email|as_crispy_field }}
+
+            <button type="submit" class="btn btn-secondary btn-lg w-100 btn-block p-2 mt-4"> Submit</button>
+          </form>
+      </div>
+      <div class="col p-4 m-2 border">
+        <h4>Delete your account from the system</h4>
+        <hr>          
+        <div class="d-flex gap-2">
+          <a class="btn btn-danger w-100 navbar-btn text-white" type="button" href="{% url 'delete-account' %}"> Delete your account </a>
+          
+          <a class="btn btn-primary w-100" href="{% url 'dashboard' %}"> Go back </a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock  %}
