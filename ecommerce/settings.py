@@ -4,8 +4,6 @@ from urllib.parse import urlparse
 import environ
 import os
 
-import mimetypes
-mimetypes.add_type("text/css", ".css", True)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
