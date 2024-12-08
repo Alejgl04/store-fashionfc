@@ -57,14 +57,17 @@
       <ul class="navbar-nav ms-auto">
 
         {% if user.is_authenticated %}
-          
+        
         <li class="nav-item">
           <a class="btn btn-alert mr-btn-1 navbar-btn text-white" type="button" href="{% url 'dashboard' %}"> Dashboard </a>
         </li>
-
+          {% if user.is_authenticated and user.is_staff %}
+            <li class="nav-item">
+              <a class="btn btn-alert mr-btn-1 navbar-btn text-white" type="button" href="{% url 'admin:index' %}"> Admin </a>
+            </li>
+          {% endif %}
         {% else %}
           <a class="btn btn-alert mr-btn-1 navbar-btn text-white" type="button" href="{% url 'sign-up' %}"> Sign up </a>
-
         {% endif %}
 
         
