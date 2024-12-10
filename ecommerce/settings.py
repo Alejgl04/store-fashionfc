@@ -152,7 +152,7 @@ if DEBUG:
 else:
     ALLOWED_HOSTS = ['web-app-xvaz.onrender.com','www.fashion-mc.com','*']
     # CSRF_TRUSTED_ORIGINS = ['']
-    CSRF_TRUSTED_ORIGINS = ['https://fashion-mc.com','https://web-app-xvaz.onrender.com']
+    CSRF_TRUSTED_ORIGINS = ['https://www.fashion-mc.com','https://web-app-xvaz.onrender.com']
     # AWS CREDENTIALS
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
