@@ -17,10 +17,10 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = False
 
 # ALLOWED_HOSTS = ['fashion-mc.com','www.fashion-mc.com', '*']
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['web-app-xvaz.onrender.com','*']
 
 # CSRF_TRUSTED_ORIGINS = ['']
-# CSRF_TRUSTED_ORIGINS = ['https://fashion-mc.com', 'https://www.fashion-mc.com']
+# CSRF_TRUSTED_ORIGINS = ['https://web-app-xvaz.onrender.com']
 
 # Application definition
 
@@ -146,7 +146,34 @@ if DEBUG:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    ALLOWED_HOSTS = ['web-app-xvaz.onrender.com','*']
+    CSRF_TRUSTED_ORIGINS = ['']
+    # CSRF_TRUSTED_ORIGINS = ['https://web-app-xvaz.onrender.com']
 else:
+    ALLOWED_HOSTS = ['web-app-xvaz.onrender.com','www.fashion-mc.com','*']
+    # CSRF_TRUSTED_ORIGINS = ['']
+    CSRF_TRUSTED_ORIGINS = ['https://fashion-mc.com','https://web-app-xvaz.onrender.com']
+    # AWS CREDENTIALS
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+
+    # S3 AWS CONFIGURATION BUCKET 
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    AWS_S3_FILE_OVERWRITE = False
+
+    STORAGES = {
+
+        # Media file (image) management   
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        },
+        
+        # CSS and JS file management
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        },
+    }
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -158,27 +185,7 @@ else:
     }
 }
 
-# AWS CREDENTIALS
-AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 
-# S3 AWS CONFIGURATION BUCKET 
-AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_FILE_OVERWRITE = False
-
-STORAGES = {
-
-    # Media file (image) management   
-    "default": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
-    },
-    
-    # CSS and JS file management
-    "staticfiles": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
-    },
-}
 
 # ADMIN STYLE ADJUSTMENT
 
