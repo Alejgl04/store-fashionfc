@@ -1,0 +1,40 @@
+
+# Django-E-Commerce
+This project is a dynamic and simple e-commerce Python Djnago web project.<br><br>
+
+<b> Downloading project:</b><br>
+ Clone as zip file and open it your computer or if you have git application<br>
+https://github.com/Alejgl04/store-fashionfc.git<br>
+ 
+<b>Before running this project you need intall below list apps and packages</b><br>
+
+Install Python 3.11.9 or above -> https://www.python.org/<br>
+Install Pip   -> python get-pip.py<br>
+
+
+<b>For running</b> <br>
+
+Execute enviroment script 
+python manage.py runserver<br>
+
+## MODULES CREATED
+
+1. Account<br>
+2. Cart <br>
+3. Payment <br>
+4. Store <br>
+
+## DATABASES
+1. RDS from AWS
+2. Neon DB
+
+
+## DEPLOYMENTS
+1. Render
+2. AWS 
+
+## STATIC FILES
+1. S3 from AWS
+
+## PAYMENT METHOD
+1. Paypal
